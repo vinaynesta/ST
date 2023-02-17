@@ -5,10 +5,10 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 var mongojs = require('mongojs')
-global.db = mongojs("mongodb+srv://Vinay:Vinay@sharktank.kodai7z.mongodb.net/krishna");
+global.db = mongojs("mongodb+srv://Vinay:Vinay@sharktank.kodai7z.mongodb.net/DataBase");
 
 mongoose.set('strictQuery', false);
-mongoose.connect("mongodb+srv://Vinay:Vinay@sharktank.kodai7z.mongodb.net/krishna", {
+mongoose.connect("mongodb+srv://Vinay:Vinay@sharktank.kodai7z.mongodb.net/DataBase", {
 useNewUrlParser: true,
 useUnifiedTopology: true
 });
@@ -58,7 +58,6 @@ app.get("/portfolio", function(req, res){
 	res.render("portfolio");
 });
 
-
 app.get("/profile",function(req,res){
     Users.find({},function(err,users){
         res.render("profile",{
@@ -74,6 +73,15 @@ app.get("/find",function(req,res){
             portfolioList :ports
         })
     })
+})
+
+app.post("/login",function(req,res){
+    const uid = req.body.email;
+    const psw = req.body.psw;
+    Users.find({$email:uid},function(err,users){
+        console.log("x");
+    })
+    res.redirect("/find");
 })
 
 app.post("/signUp", function (req, res) {
@@ -93,7 +101,7 @@ app.post("/signUp", function (req, res) {
 app.post("/portfolio", function (req, res) {
 	console.log(req.body.idea);
     console.log(req.body.userId);
-    var ObjectId = require('mongodb').ObjectID;
+    var ObjectId = require('mongodb').ObjectId;
 
     const port = new portfolio({
     idea: req.body.idea,
@@ -112,12 +120,14 @@ app.post("/portfolio", function (req, res) {
 
     console.log("x",x);
     console.log("y",y);
+
+    db.createCollection("counters");
     
     db.users.updateOne(
         { "_id.$oid" : x },
         { $push: { ideas: y } }
     );
-     
+ 
     res.redirect("/find");
 });
 

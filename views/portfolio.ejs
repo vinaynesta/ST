@@ -1,17 +1,19 @@
 <!DOCTYPE html>
     <html lang="en">
         
-        <body>
+        <center>
             <h2>Entrepreneur's Portal</h2>
             <form action="/portfolio" method="post">
                 <label for="idea">Idea:</label><br>
-                <input type="text" id="idea" name="idea" ><br><br>
+                <textarea rows="4" cols="50" id="idea" name="idea"></textarea>
+                <br><br>
                 <label for="ask">Ask:</label><br>
-                <input type="text" id="ask" name="ask" ><br><br>
+                <span>&#8377</span>
+                <input type="text" id="ask" name="ask" onkeyup="myFunction()"><br><br>
                 <label for="equity">Equity:</label><br>
-                <input type="text" id="equity" name="equity" ><br><br>
-                <label for="evaluation">Evaluation:</label><br><br> 
-                <input type="text" id="evaluation" name="evaluation" ><br><br>
+                <input type="text" id="equity" name="equity" onkeyup="myFunction()">%<br><br>
+                <label >Evaluation:</label><br>
+                <span id="evaluation" name="evaluation"></span><br><br>
                 <label for="mobileNumber">Mobile Number:</label><br><br> 
                 <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="1234567890" pattern="[0-9]{10}" required><br><br>
                 <label for="mobileNumber">E-mail:</label><br><br>
@@ -20,6 +22,21 @@
                 <input type="text" id="userId" name="userId" ><br><br>
                 <input type="submit" value="Submit">
             </form>
+            <script>
+                function myFunction() {
+                  var x = Number(document.getElementById("ask").value);
+                  var y = Number(document.getElementById("equity").value);
+                  var e=0;
+                  if(x==""||y==""){
+                    e=0;
+                  }
+                  else{
+                    e=x/y;
+                  }
+                  document.getElementById("evaluation").innerHTML = e;
+                }
+            </script>
+        </center>
         </body>
     
         </html>
