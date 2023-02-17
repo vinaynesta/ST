@@ -6,23 +6,24 @@
             <form action="/portfolio" method="post">
                 <label for="idea">Idea:</label><br>
                 <textarea rows="4" cols="50" id="idea" name="idea"></textarea>
-                <br><br>
+                <br>
+                <label for="demoV">Link for Demo:</label><br>
+                <input type="text" id="demoVideoLink" name="demoVideoLink">
+                <br>
                 <label for="ask">Ask:</label><br>
                 <span>&#8377</span>
-                <input type="text" id="ask" name="ask" onkeyup="myFunction()"><br><br>
+                <input type="text" id="ask" name="ask" ><br><br>
                 <label for="equity">Equity:</label><br>
-                <input type="text" id="equity" name="equity" onkeyup="myFunction()">%<br><br>
+                <input type="text" id="equity" name="equity">%<br><br>
                 <label >Evaluation:</label><br>
-                <span id="evaluation" name="evaluation"></span><br><br>
+                <input id="evaluation" name="evaluation"></input><br><br>
                 <label for="mobileNumber">Mobile Number:</label><br><br> 
                 <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="1234567890" pattern="[0-9]{10}" required><br><br>
                 <label for="mobileNumber">E-mail:</label><br><br>
                 <input type="email" id="email" name="email"> <br><br>
-                <label for="userId">User Id:</label><br>
-                <input type="text" id="userId" name="userId" ><br><br>
                 <input type="submit" value="Submit">
             </form>
-            <script>
+            <!--<script>
                 function myFunction() {
                   var x = Number(document.getElementById("ask").value);
                   var y = Number(document.getElementById("equity").value);
@@ -35,7 +36,7 @@
                   }
                   document.getElementById("evaluation").innerHTML = e;
                 }
-            </script>
+            </script>-->
         </center>
         </body>
     

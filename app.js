@@ -15,11 +15,12 @@ useUnifiedTopology: true
 
 const portfolioSchema = {
 idea: String,
+demoVideoLink:String,
 ask: Number,
 equity:Number,
 evaluation:Number,
 mobileNumber:Number,
-email:String
+email:String,
 };
 
 const usersSchema = {
@@ -47,7 +48,11 @@ app.use(bodyParser.urlencoded({
 app.use(express.static(__dirname + '/public'));
 
 app.get("/",(req,res)=>{
-    res.send("Hello Bro");
+    res.render("index");
+})
+
+app.get("/login",function(req,res){
+    res.render("logIn");
 })
 
 app.get("/signup",function(req,res){
@@ -75,14 +80,35 @@ app.get("/find",function(req,res){
     })
 })
 
-app.post("/login",function(req,res){
+/*app.post("/login",function(req,res){
     const uid = req.body.email;
     const psw = req.body.psw;
-    Users.find({$email:uid},function(err,users){
-        console.log("x");
-    })
+    console.log(uid);
+    console.log(psw);
+    const x=db.users.find( { email: uid } );
+    console.log("x",x);
     res.redirect("/find");
+})*/
+
+app.post("/login",function(req,res){
+    let p=req.body.psw;
+    Users.findById('63ef0d615423deead6e806c3').then((result)=>{
+        let x=result;
+        console.log(x);
+        console.log(x.email);
+        console.log("psw",p);
+        if(result.password===p){
+            res.redirect("/find");
+        }
+        else{
+            res.send("Oops! Something went wrong.");
+        }
+    }).catch((err)=>{
+        console.log(err);
+    })
 })
+
+
 
 app.post("/signUp", function (req, res) {
 	console.log(req.body.userName);
@@ -100,33 +126,19 @@ app.post("/signUp", function (req, res) {
 
 app.post("/portfolio", function (req, res) {
 	console.log(req.body.idea);
-    console.log(req.body.userId);
-    var ObjectId = require('mongodb').ObjectId;
-
+    
     const port = new portfolio({
     idea: req.body.idea,
     ask: req.body.ask,
     equity: req.body.equity,
     evaluation: req.body.evaluation,
     mobileNumber: req.body.mobileNumber,
-    email: req.body.email
+    email: req.body.email,
+    demoVideoLink: req.body.demoVideoLink
      });  
     console.log(port);
     
     port.save();
-
-    let x = req.body.userId;
-    let y = port._id;
-
-    console.log("x",x);
-    console.log("y",y);
-
-    db.createCollection("counters");
-    
-    db.users.updateOne(
-        { "_id.$oid" : x },
-        { $push: { ideas: y } }
-    );
  
     res.redirect("/find");
 });
