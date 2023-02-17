@@ -13,9 +13,11 @@ useNewUrlParser: true,
 useUnifiedTopology: true
 });
 
-const loginDetails = {
+const loginDetailsSchema = {
+    userid: String,
+    password: String
+};
 
-}
 
 const portfolioSchema = {
 idea: String,
@@ -36,9 +38,12 @@ const usersSchema = {
     ideas:[]
 }
 
+const LoginDetails = mongoose.model("LoginDetails", loginDetailsSchema);
+
 const portfolio = mongoose.model("portfolio", portfolioSchema);
 
 const Users = mongoose.model("Users", usersSchema);
+
 
 
 app.set("view engine", "ejs");
@@ -68,12 +73,17 @@ app.get("/portfolio", function(req, res){
 });
 
 app.get("/profile",function(req,res){
-    Users.find({},function(err,users){
-        res.render("profile",{
-            usersList :users
-        })
-    })
-})
+     let x =LoginDetails.find({}).sort({_id:-1}).limit(1).exec(function(err,docs){
+        d= docs;
+        console.log("docs",docs);
+        res.doc;
+    });
+    console.log("x",x);
+    res.render("profile",{
+        userDetails : x
+    });
+});
+
 
 
 app.get("/find",function(req,res){
@@ -98,20 +108,35 @@ app.post("/login",function(req,res){
     let p=req.body.psw;
     const uid = req.body.email;
 
+    const loginUser = new LoginDetails({
+        userid: uid,
+        password: p,
+         });
+        
+    console.log(loginUser);
+    loginUser.save();
+
     Users.findOne({email: uid}).then((result)=>{
-        let x=result;
-        console.log(x);
-        console.log(x.email);
-        console.log("psw",p);
-        if(result.password===p){
-            res.redirect("/find");
-        }
-        else{
+        if(result==null){
             res.send("Oops! Something went wrong.");
         }
+        else{
+            let x=result;
+            console.log(x);
+            console.log(x.email);
+            console.log("psw",p);
+            if(result.password===p){
+                res.redirect("/find");
+            }
+            else{
+                res.send("Oops! Something went wrong.");
+            }
+
+            }
+        
     }).catch((err)=>{
         console.log(err);
-    })
+    });
 
     /*
     Users.findById('63ef0d615423deead6e806c3').then((result)=>{
@@ -128,7 +153,7 @@ app.post("/login",function(req,res){
     }).catch((err)=>{
         console.log(err);
     })*/
-})
+});
 
 
 
@@ -148,7 +173,6 @@ app.post("/signUp", function (req, res) {
 
 app.post("/portfolio", function (req, res) {
 	console.log(req.body.idea);
-    
     const port = new portfolio({
     idea: req.body.idea,
     ask: req.body.ask,
