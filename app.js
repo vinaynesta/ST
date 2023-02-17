@@ -13,6 +13,10 @@ useNewUrlParser: true,
 useUnifiedTopology: true
 });
 
+const loginDetails = {
+
+}
+
 const portfolioSchema = {
 idea: String,
 demoVideoLink:String,
@@ -92,7 +96,9 @@ app.get("/find",function(req,res){
 
 app.post("/login",function(req,res){
     let p=req.body.psw;
-    Users.findById('63ef0d615423deead6e806c3').then((result)=>{
+    const uid = req.body.email;
+
+    Users.findOne({email: uid}).then((result)=>{
         let x=result;
         console.log(x);
         console.log(x.email);
@@ -106,6 +112,22 @@ app.post("/login",function(req,res){
     }).catch((err)=>{
         console.log(err);
     })
+
+    /*
+    Users.findById('63ef0d615423deead6e806c3').then((result)=>{
+        let x=result;
+        console.log(x);
+        console.log(x.email);
+        console.log("psw",p);
+        if(result.password===p){
+            res.redirect("/find");
+        }
+        else{
+            res.send("Oops! Something went wrong.");
+        }
+    }).catch((err)=>{
+        console.log(err);
+    })*/
 })
 
 
@@ -122,7 +144,7 @@ app.post("/signUp", function (req, res) {
     console.log(user);
     user.save();
     res.redirect("/find");
-});
+}); 
 
 app.post("/portfolio", function (req, res) {
 	console.log(req.body.idea);
